@@ -6,6 +6,7 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
+//--------Inscription-------------------
 router.get('/register', (req, res) => {
     res.render('register');
 });
