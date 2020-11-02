@@ -3,7 +3,8 @@ const express = require("express");
 const path = require('path');
 const mysql = require("mysql");
 const dotenv = require('dotenv');
-const cors = require('cors')
+const cors = require('cors');
+const cookieParser = require("cookie-parser");
 
 dotenv.config({ path: './.env' });
 
@@ -31,6 +32,7 @@ app.use(express.static(publicDirectory));
 app.use(express.urlencoded({ extended: false }));
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'hbs');
 
