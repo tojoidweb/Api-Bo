@@ -27,14 +27,20 @@ exports.login = (req, res) => {
 
         db.query('SELECT * FROM user WHERE email = ?', [email], async(error, results) => {
             console.log("ito", results);
-            let hashedPassword = await bcrypt.hash(password, 8);
-            console.log("crypter", hashedPassword);
+            // let hashedPassword = await bcrypt.hash(password, 8);
+            console.log("crypter", password);
             // const salt = await bcrypt.genSaltSync(10);
             // const password = await req.body.password;
             //-------------Il y a une problème sur cette ligne code-----------------
             // if (!results || results[0].password !== password) {
-            //-------------Solution-----------------
-            if (!results || !(await bcrypt.compare(password, hashedPassword))) {
+
+            //-------------Solution n'est pas fiable-----------------
+            // if (!results || !(await bcrypt.compare(password, hashedPassword))) {
+
+
+
+            // if (!results || !(await bcrypt.compare(password, results[0].password))) {
+            if (!results || password != results[0].password) {
                 res.status(401).json({
                         message: 'Email or Password id incorrect'
                     })
@@ -58,11 +64,16 @@ exports.login = (req, res) => {
                 // ---------------Valeur à retourner-----------------
                 res.json(results[0]);
             }
+
+            //--------------------------------------------------
+
+            //--------------------------------------------
         })
 
     } catch (err) {
         console.log(err);
     }
+
 
 }
 
@@ -74,41 +85,38 @@ exports.register = (req, res) => {
 
     db.query('SELECT email FROM user user WHERE email = ?', [email], async(error, results) => {
         if (error) {
-            console.log("Inscriptio é error", error);
+            console.log("L'inscription réfuer", error);
         }
 
         if (results.length > 0) {
             // Cette fonction retourne la view register avec le message d'erreur
             // Mais il y a une problème
             return res.render('register', {
-                    message: 'That email is already in use'
-                })
-                // res.send("That email is already in use");
+                message: 'Email est déja utiliser'
+            })
         }
-        //  else if(password !== passwordconfirm) {
-        //     return res.render('register', {
-        //         message: 'Passwords do not math'
-        //     });
-        // }
 
-        let hashedPassword = await bcrypt.hash(password, 8);
-        console.log(hashedPassword)
+        // let hashedPassword = await bcrypt.hash(password, 8);
+        // console.log(hashedPassword)
 
         //-----------INSERTION dans la base de données-------------------
-        db.query('INSERT INTO user SET ?', { nom: nom, email: email, password: hashedPassword }, (error, results) => {
+        db.query('INSERT INTO user SET ?', { nom: nom, email: email, password: password }, (error, results) => {
             if (results) {
-                console.log(results);
-                res.send("user registered");
+                console.log("Inscription results", results);
+                // res.send("user registered");
+
+                //------------Renvoyer le json----------------
+                res.json(results);
             } else {
                 // Mais il y a une problème
                 console.log(error);
-                return res.json({
-                    message: 'user registered'
-                });
+                // return res.json({
+                //     message: 'user registered'
+                // });
+                return res.json(results);
                 // res.send("Register user failed");
             }
         })
     });
 
-    // res.send("Test");
 }
