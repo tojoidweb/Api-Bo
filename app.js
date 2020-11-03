@@ -14,6 +14,8 @@ const corsOptions = {
     origin: '*'
 }
 
+
+
 app.use(cors(corsOptions));
 
 //--Connection avec la base de donnée--
@@ -49,6 +51,15 @@ app.use('/', require('./routes/page'))
 
 //--------Authentification-------------------
 app.use('/auth', require('./routes/auth'));
+
+app.post('*', (req, res) => {
+    const nom = req.body.nom;
+    const user = { name: nom };
+
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+    res.json({ accessToken: accessToken })
+})
+
 
 app.listen(8080, () => {
     console.log("Server started on Port 8080");
