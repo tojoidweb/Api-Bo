@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+// const { encryptPWD, comparePWD } = require('../helpers');
 
 // module.exports = authorize;
 //--Connection avec la base de donnée--
