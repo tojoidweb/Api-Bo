@@ -12,7 +12,7 @@ module.exports = {
             user: 'app@kenza.re',
             host: '185.22.109.100',
             ref: 'origin/master',
-            repo: 'github.com/MarkoWilliam/Back-kenza-nodeJS.git',
+            repo: 'github.com/tojoidweb/Api-Bo.git',
             path: '/back_node',
             'pre-deploy-local': '',
             'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
