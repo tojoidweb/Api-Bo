@@ -13,15 +13,27 @@ const db = mysql.createConnection({
     database: process.env.DATABASE,
 });
 
+/////// test tojo
+exports.ListeUser = (req, res) => {
+    try {
+        db.query('SELECT * FROM user', async(error, results) => {
+            console.log(results);
+            res.json(results);
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 //-------------Login-------------------
 exports.login = (req, res) => {
     try {
         // passport.authenticate('local');
 
         const { email, password } = req.body;
-        console.log("REq body", req.body)
+        // console.log("REq body", req.body)
 
-        var headers = {};
+
         // IE8 n'autorise pas la spécification de domaines, juste le *
         // headers ["Access-Control-Allow-Origin"] = req.headers.origin;
         if (req.body.password === '' || req.body.email === '') {
@@ -34,7 +46,7 @@ exports.login = (req, res) => {
 
 
         db.query('SELECT * FROM user WHERE email = ?   ', [email], async(error, results) => {
-            console.log("ito", results);
+            // console.log("ito", results);
             if (req.method === 'OPTIONS') {
                 console.log('! OPTIONS');
                 var headers = {};
@@ -48,11 +60,6 @@ exports.login = (req, res) => {
                 res.writeHead(200, en - têtes);
                 res.end();
 
-            } else if (email != results.email) {
-                console.log("Test 2")
-                res.status(406).json({
-                    message: 'Aucun résultat'
-                });
             } else if (!results || !(bcrypt.compareSync(password, results[0].password))) {
                 res.status(401).json({
                     message: 'Email or Password id incorrect'
@@ -92,6 +99,7 @@ exports.login = (req, res) => {
 
 
 }
+
 
 //-------------Inscription---------------------
 exports.register = (req, res) => {

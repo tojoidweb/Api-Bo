@@ -11,4 +11,9 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 
 
+//////////// test tojo
+//--------------- lsiote user ------------------
+router.get('/listeutilisateur', authController.ListeUser);
+
+
 module.exports = router;
